@@ -14,7 +14,7 @@ pipeline {
         stage('📥 Checkout Code') {
             steps {
                 echo 'Cloning from GitHub...'
-                git 'https://github.com/YOUR_USERNAME/SimpleJavaApp.git'
+                git 'https://github.com/Arghya-jain/cs014_cs039.git'
             }
         }
 

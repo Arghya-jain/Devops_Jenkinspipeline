@@ -2,64 +2,58 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN_HOME'   // Name of Maven in Global Tool Config
-        jdk 'JAVA_HOME'       // Name of JDK in Global Tool Config
-    }
-
-    environment {
-        PROJECT_NAME = 'cs014_cs039'
+        maven 'MAVEN_HOME'
+        jdk 'JAVA_HOME'
     }
 
     stages {
-        stage('📥 Checkout Code') {
+        stage('📥 Checkout') {
             steps {
-                echo 'Cloning from GitHub...'
-                git 'https://github.com/Arghya-jain/cs014_cs039.git'
+                git branch: 'main', url: 'https://github.com/Arghya-jain/cs014_cs039.git'
             }
         }
 
-        stage('🔍 Code Quality Check') {
+        stage('🔍 Validate') {
             steps {
-                echo 'Running Maven validate phase...'
-                sh 'mvn validate'
+                bat 'mvn validate'
+                // sh 'mvn validate'  // for Linux
             }
         }
 
         stage('⚙ Compile') {
             steps {
-                echo 'Compiling the code...'
-                sh 'mvn compile'
+                bat 'mvn compile'
+                // sh 'mvn compile'   // for Linux
             }
         }
 
-        stage('🧪 Unit Tests') {
+        stage('🧪 Test') {
             steps {
-                echo 'Running tests...'
-                sh 'mvn test'
+                bat 'mvn test'
+                // sh 'mvn test'      // for Linux
             }
         }
 
         stage('📦 Package') {
             steps {
-                echo 'Packaging the application...'
-                sh 'mvn package'
+                bat 'mvn package'
+                // sh 'mvn package'   // for Linux
             }
         }
 
-        stage('📤 Archive Artifacts') {
+        stage('📤 Archive') {
             steps {
-                echo 'Archiving built artifacts...'
-                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+                archiveArtifacts 'target/*.jar'
             }
         }
     }
 
     post {
         success {
-            echo "✅ Build for ${env.PROJECT_NAME} completed successfully."
+            echo '✅ Build succeeded!'
         }
         failure {
-            echo "❌ Build for ${env.PROJECT_NAME} failed."
+            echo '❌ Build failed!'
         }
     }
 }
